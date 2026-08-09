@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Профиль — Kraken Client{% endblock %}
+{% block content %}
+
+<section class="page-head">
+  <span class="eyebrow">ПРОФИЛЬ</span>
+  <h1>{{ user.username }}</h1>
+</section>
+
+<section class="profile-grid">
+  <div class="stat-card tilt-card">
+    <span class="stat-label">Статус подписки</span>
+    {% if user.lifetime %}
+      <span class="stat-value stat-good">Навсегда</span>
+    {% elif user.is_active_subscriber %}
+      <span class="stat-value stat-good">Активна до {{ user.subscription_until.strftime('%d.%m.%Y %H:%M') }} UTC</span>
+    {% else %}
+      <span class="stat-value stat-bad">Не активна</span>
+    {% endif %}
+  </div>
+
+  <div class="stat-card tilt-card">
+    <span class="stat-label">ID пользователя</span>
+    <span class="stat-value mono">#{{ user.id }}</span>
+  </div>
+
+  <div class="stat-card tilt-card">
+    <span class="stat-label">Привязанный HWID</span>
+    <span class="stat-value mono">{{ user.hwid or "не привязан" }}</span>
+  </div>
+
+  <div class="stat-card tilt-card">
+    <span class="stat-label">Дата регистрации</span>
+    <span class="stat-value">{{ user.created_at.strftime('%d.%m.%Y %H:%M') }} UTC</span>
+  </div>
+</section>
+
+<section class="launcher-token">
+  <h2>Токен для лаунчера</h2>
+  <p>Лаунчер получает этот токен автоматически после входа по логину и паролю. Обновите его, если считаете, что он скомпрометирован.</p>
+  <div class="token-row">
+    <code class="mono">{{ user.license_token }}</code>
+    <form method="post" action="{{ url_for('regenerate_token') }}">
+      <button class="btn btn-ghost" type="submit">Обновить токен</button>
+    </form>
+  </div>
+</section>
+
+<section class="orders">
+  <h2>История заявок</h2>
+  {% if orders %}
+  <table class="orders-table">
+    <thead><tr><th>№</th><th>Тариф</th><th>Сумма</th><th>Статус</th><th>Дата</th></tr></thead>
+    <tbody>
+      {% for o in orders %}
+      <tr>
+        <td class="mono">#{{ o.id }}</td>
+        <td>{{ plans[o.plan].label }}</td>
+        <td>{{ o.price }} ₽</td>
+        <td><span class="badge badge-{{ o.status }}">{{ {'pending':'ожидает','paid':'оплачено','cancelled':'отменено'}[o.status] }}</span></td>
+        <td>{{ o.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">Заявок пока нет.</p>
+  {% endif %}
+</section>
+
+{% endblock %}

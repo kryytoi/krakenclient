@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Kraken Client — модификация для Minecraft{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">UTILITY / PVP MOD · JAVA EDITION</span>
+    <h1>Из глубин —<br><span class="grad">клиент, который тянет вас на дно</span></h1>
+    <p class="lede">
+      Kraken Client — платная модификация для Minecraft с автообновляемым лаунчером.
+      Один клик — и актуальная сборка сама встаёт в папку <code>mods</code>.
+    </p>
+    <div class="hero-actions">
+      <a href="{{ url_for('pricing') }}" class="btn btn-primary">Выбрать тариф</a>
+      <a href="{{ url_for('register') }}" class="btn btn-ghost">Создать аккаунт</a>
+    </div>
+  </div>
+
+  <div class="hero-emblem" id="tilt-emblem">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="">
+  </div>
+</section>
+
+<div class="tentacle-rule" aria-hidden="true">
+  <svg viewBox="0 0 1200 24" preserveAspectRatio="none"><path d="M0 12 L40 12 L60 2 L80 22 L100 4 L120 12 L1200 12" /></svg>
+</div>
+
+<section class="features">
+  <article class="feature-card tilt-card">
+    <span class="feature-mark">◈</span>
+    <h3>Лаунчер, который делает всё сам</h3>
+    <p>Скачивает зашифрованную сборку с GitHub, расшифровывает и кладёт готовый <code>.jar</code> в <code>mods</code> — без ручной установки.</p>
+  </article>
+  <article class="feature-card tilt-card">
+    <span class="feature-mark">◈</span>
+    <h3>Личный профиль</h3>
+    <p>Срок подписки, привязанный HWID, ID аккаунта и дата регистрации — всё в одном месте.</p>
+  </article>
+  <article class="feature-card tilt-card">
+    <span class="feature-mark">◈</span>
+    <h3>Тёмная и светлая глубина</h3>
+    <p>Переключайте тему в один клик: чёрно-фиолетовая ночь или светлый чёрно-белый прилив.</p>
+  </article>
+</section>
+
+{% endblock %}

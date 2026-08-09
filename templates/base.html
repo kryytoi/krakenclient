@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Kraken Client{% endblock %}</title>
+<link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="depth-bg"><canvas id="abyss"></canvas></div>
+
+<header class="site-header">
+  <a class="brand" href="{{ url_for('index') }}">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Kraken Client">
+    <span>KRAKEN<em>CLIENT</em></span>
+  </a>
+
+  <nav class="site-nav">
+    <a href="{{ url_for('index') }}">Клиент</a>
+    <a href="{{ url_for('pricing') }}">Тарифы</a>
+    {% if current_user %}
+      <a href="{{ url_for('profile') }}">Профиль</a>
+      {% if current_user.is_admin %}<a href="{{ url_for('admin_home') }}">Админ</a>{% endif %}
+      <a href="{{ url_for('logout') }}">Выйти</a>
+    {% else %}
+      <a href="{{ url_for('login') }}">Вход</a>
+      <a class="nav-cta" href="{{ url_for('register') }}">Регистрация</a>
+    {% endif %}
+  </nav>
+
+  <button id="theme-toggle" class="theme-toggle" title="Сменить тему" aria-label="Сменить тему">
+    <span class="theme-toggle-track"><span class="theme-toggle-thumb"></span></span>
+  </button>
+</header>
+
+<main>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-stack">
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="tentacle-rule" aria-hidden="true">
+    <svg viewBox="0 0 1200 24" preserveAspectRatio="none"><path d="M0 12 L40 12 L60 2 L80 22 L100 4 L120 12 L1200 12" /></svg>
+  </div>
+  <p>© {{ 2026 }} Kraken Client — независимая модификация. Используйте на свой риск и с учётом правил сервера.</p>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

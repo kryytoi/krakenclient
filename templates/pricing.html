@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Тарифы — Kraken Client{% endblock %}
+{% block content %}
+
+<section class="page-head">
+  <span class="eyebrow">ТАРИФЫ</span>
+  <h1>Выберите глубину погружения</h1>
+  <p class="lede">Оплата пока принимается вручную — после заявки администратор подтверждает платёж и активирует доступ.</p>
+</section>
+
+<section class="pricing-grid">
+  {% for key, plan in plans.items() if key != 'hwid_reset' %}
+  <article class="price-card tilt-card {{ 'price-card-featured' if key == 'forever' }}">
+    <h3>{{ plan.label }}</h3>
+    <div class="price">{{ plan.price }} <span>₽</span></div>
+    <ul>
+      {% if key == 'forever' %}
+        <li>Вечный доступ без ограничений</li>
+        <li>Приоритетные обновления</li>
+        <li>VIP поддержка</li>
+      {% elif key == '120d' %}
+        <li>Полный доступ к Kraken Client</li>
+        <li>Приоритетные обновления</li>
+        <li>Быстрая поддержка</li>
+      {% else %}
+        <li>Полный доступ к Kraken Client</li>
+        <li>Автоматические обновления</li>
+        <li>Базовая поддержка</li>
+      {% endif %}
+    </ul>
+    {% if current_user %}
+      <form method="post" action="{{ url_for('buy', plan_key=key) }}">
+        <button class="btn btn-primary btn-block" type="submit">Купить</button>
+      </form>
+    {% else %}
+      <a class="btn btn-primary btn-block" href="{{ url_for('login', next=url_for('pricing')) }}">Купить</a>
+    {% endif %}
+  </article>
+  {% endfor %}
+
+  <article class="price-card tilt-card price-card-utility">
+    <h3>{{ plans.hwid_reset.label }}</h3>
+    <div class="price">{{ plans.hwid_reset.price }} <span>₽</span></div>
+    <ul>
+      <li>Сбрасывает ваш HWID</li>
+      <li>Пригодится при смене ПК</li>
+    </ul>
+    {% if current_user %}
+      <form method="post" action="{{ url_for('buy', plan_key='hwid_reset') }}">
+        <button class="btn btn-primary btn-block" type="submit">Купить</button>
+      </form>
+    {% else %}
+      <a class="btn btn-primary btn-block" href="{{ url_for('login', next=url_for('pricing')) }}">Купить</a>
+    {% endif %}
+  </article>
+</section>
+
+{% endblock %}
